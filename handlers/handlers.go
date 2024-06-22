@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"url-shortener/storage"
 	"url-shortener/utils"
@@ -19,7 +20,7 @@ func ShortenURL(c *gin.Context) {
 
 	shortURL := utils.GenerateShortURL(request.URL)
 	storage.SaveURL(request.URL, shortURL)
-	c.JSON(http.StatusOK, gin.H{"short_url": shortURL})
+	c.JSON(http.StatusOK, gin.H{"short_url": fmt.Sprintf("http://localhost:8080/%s", shortURL)})
 }
 
 func RedirectURL(c *gin.Context) {
