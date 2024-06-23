@@ -2,6 +2,7 @@ package storage
 
 import (
 	"net/url"
+	"sort"
 	"sync"
 )
 
@@ -32,7 +33,25 @@ func GetTopDomains(n int) map[string]int {
 	mu.Lock()
 	defer mu.Unlock()
 
-	// Here you would implement logic to return the top n domains by count
-	// For simplicity, returning the entire map
-	return domainCounts
+	type kv struct {
+		Key   string
+		Value int
+	}
+
+	var ss []kv
+
+	for k, v := range domainCounts {
+		ss = append(ss, kv{k, v})
+	}
+
+	sort.Slice(ss, func(i, j int) bool {
+		return ss[i].Value > ss[j].Value
+	})
+
+	topDomains := make(map[string]int)
+	for i := 0; i < n && i < len(ss); i++ {
+		topDomains[ss[i].Key] = ss[i].Value
+	}
+
+	return topDomains
 }
