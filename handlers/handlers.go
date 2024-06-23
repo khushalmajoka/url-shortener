@@ -3,8 +3,10 @@ package handlers
 import (
 	"fmt"
 	"net/http"
+	"url-shortener/config"
 	"url-shortener/storage"
 	"url-shortener/utils"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -20,7 +22,7 @@ func ShortenURL(c *gin.Context) {
 
 	shortURL := utils.GenerateShortURL(request.URL)
 	storage.SaveURL(request.URL, shortURL)
-	c.JSON(http.StatusOK, gin.H{"short_url": fmt.Sprintf("http://localhost:8080/%s", shortURL)})
+	c.JSON(http.StatusOK, gin.H{"short_url": fmt.Sprintf("http://localhost:%s/%s", config.Port, shortURL)})
 }
 
 func RedirectURL(c *gin.Context) {

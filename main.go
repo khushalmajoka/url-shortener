@@ -1,7 +1,10 @@
 package main
 
 import (
+	"fmt"
+	"url-shortener/config"
 	"url-shortener/handlers"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -12,5 +15,5 @@ func main() {
 	router.GET("/:shortURL", handlers.RedirectURL)
 	router.GET("/metrics", handlers.GetMetrics)
 
-	router.Run(":8080")
+	router.Run(fmt.Sprintf(":%s", config.Port))
 }
